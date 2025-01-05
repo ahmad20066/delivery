@@ -20,12 +20,14 @@ class CustomButton extends StatelessWidget {
   final double height, width;
   final Color? borderColor;
   final bool rotateOnAr;
+  final bool loading;
 
   const CustomButton({
     Key? key,
     required this.title,
     this.icon,
     this.opacity = 1,
+    this.loading = false,
     this.ispng = false,
     this.rotateOnAr = false,
     this.isprefix = false,
@@ -56,53 +58,59 @@ class CustomButton extends StatelessWidget {
               border: hasBorder!
                   ? Border.all(width: 1, color: borderColor!)
                   : null),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (icon != null && isprefix)
-                ispng
-                    ? ImageIcon(
-                        AssetImage(icon!),
-                        color: Colors.white,
-                      )
-                    : RotatedBox(
-                        quarterTurns: !rotateOnAr
-                            ? 0
-                            : Get.locale!.languageCode == "ar"
-                                ? 2
-                                : 0,
-                        child: SvgPicture.asset(icon!)),
-              if (icon != null && isprefix)
-                SizedBox(
-                  width: 5.w,
+          child: loading
+              ? Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.white38,
+                  ),
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (icon != null && isprefix)
+                      ispng
+                          ? ImageIcon(
+                              AssetImage(icon!),
+                              color: Colors.white,
+                            )
+                          : RotatedBox(
+                              quarterTurns: !rotateOnAr
+                                  ? 0
+                                  : Get.locale!.languageCode == "ar"
+                                      ? 2
+                                      : 0,
+                              child: SvgPicture.asset(icon!)),
+                    if (icon != null && isprefix)
+                      SizedBox(
+                        width: 5.w,
+                      ),
+                    Text(
+                      title,
+                      style: textStyle ??
+                          Theme.of(context)
+                              .textTheme
+                              .labelLarge!
+                              .copyWith(color: Colors.white),
+                    ),
+                    if (icon != null && !isprefix)
+                      SizedBox(
+                        width: 5.w,
+                      ),
+                    if (icon != null && !isprefix)
+                      ispng
+                          ? ImageIcon(
+                              AssetImage(icon!),
+                              color: Colors.white,
+                            )
+                          : RotatedBox(
+                              quarterTurns: !rotateOnAr
+                                  ? 0
+                                  : Get.locale!.languageCode == "ar"
+                                      ? 2
+                                      : 0,
+                              child: SvgPicture.asset(icon!))
+                  ],
                 ),
-              Text(
-                title,
-                style: textStyle ??
-                    Theme.of(context)
-                        .textTheme
-                        .labelLarge!
-                        .copyWith(color: Colors.white),
-              ),
-              if (icon != null && !isprefix)
-                SizedBox(
-                  width: 5.w,
-                ),
-              if (icon != null && !isprefix)
-                ispng
-                    ? ImageIcon(
-                        AssetImage(icon!),
-                        color: Colors.white,
-                      )
-                    : RotatedBox(
-                        quarterTurns: !rotateOnAr
-                            ? 0
-                            : Get.locale!.languageCode == "ar"
-                                ? 2
-                                : 0,
-                        child: SvgPicture.asset(icon!))
-            ],
-          ),
         ));
   }
 }

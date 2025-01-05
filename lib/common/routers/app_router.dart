@@ -1,10 +1,12 @@
 import 'package:deliveryapp/features/auth/pages/login_page.dart';
 import 'package:deliveryapp/features/auth/pages/signup_page.dart';
 import 'package:deliveryapp/features/cart/pages/cart_page.dart';
+import 'package:deliveryapp/features/driver/pages/orders_screen.dart';
 import 'package:deliveryapp/features/home/pages/product_details_page.dart';
 import 'package:deliveryapp/features/home/pages/products_page.dart';
 import 'package:deliveryapp/features/main_layout/screen/main_layout_screen.dart';
 import 'package:deliveryapp/features/profile/pages/edit_profile.dart';
+import 'package:deliveryapp/features/splash/page/splash_page.dart';
 import 'package:get/get.dart';
 
 class AppRoute {
@@ -16,6 +18,8 @@ class AppRoute {
   static const productDetails = '/product-details';
   static const editProfile = '/edit-profile';
   static const cartPage = '/cart';
+  static const splash = '/splash';
+  static const driver = '/drive';
 
   static List<GetPage> pages = [
     GetPage(name: loginPageUrl, page: () => LoginPage()),
@@ -25,5 +29,7 @@ class AppRoute {
     GetPage(name: productDetails, page: () => ProductDetailsPage()),
     GetPage(name: editProfile, page: () => EditProfile()),
     GetPage(name: cartPage, page: () => CartPage()),
+    GetPage(name: splash, page: () => SplashPage()),
+    GetPage(name: driver, page: () => OrdersScreen()),
   ];
 }

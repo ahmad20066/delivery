@@ -32,8 +32,8 @@ class ProductModel {
       id: map['id'] as int,
       name: map['name'] as String,
       description: map['description'] as String,
-      amount: map['amount'] as String,
-      price: map['price'] as String,
+      amount: map['amount'].toString() as String,
+      price: map['price'].toString() as String,
       image: map['image'] as String,
     );
   }

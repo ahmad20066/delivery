@@ -34,7 +34,7 @@ class StoreModel {
       description: map['description'] as String,
       image: map['image'] as String,
       products: List<ProductModel>.from(
-        (map['products'] as List<int>).map<ProductModel>(
+        (map['product'] as List).map<ProductModel>(
           (x) => ProductModel.fromMap(x as Map<String, dynamic>),
         ),
       ),

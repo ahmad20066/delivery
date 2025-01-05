@@ -1,9 +1,14 @@
 import 'package:deliveryapp/common/routers/app_router.dart';
+import 'package:deliveryapp/data/enums/request_status.dart';
+import 'package:deliveryapp/features/cart/controllers/cart_controller.dart';
 import 'package:deliveryapp/features/home/controllers/home_controller.dart';
+import 'package:deliveryapp/features/home/widgets/store_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:deliveryapp/data/models/store_model.dart';
 import 'package:deliveryapp/common/widgets/custom_appbar.dart';
+import 'package:badges/badges.dart' as badges;
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -13,93 +18,64 @@ class HomePage extends StatelessWidget {
     final HomeController controller = Get.put(HomeController());
 
     return Scaffold(
-      appBar: CustomAppBar(title: "Home"),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // Two items per row
-            crossAxisSpacing: 16.0,
-            mainAxisSpacing: 16.0,
-            childAspectRatio: 0.75, // Adjusts the height to width ratio
+      appBar: CustomAppBar(
+        title: "Home",
+        actions: [
+          GestureDetector(
+            onTap: () {
+              Get.toNamed(AppRoute.cartPage);
+            },
+            child: GetBuilder<CartController>(builder: (controller) {
+              return badges.Badge(
+                badgeStyle: badges.BadgeStyle(
+                  badgeColor: Colors.redAccent,
+                ),
+                badgeContent: Text(
+                  controller.cartItems.length
+                      .toString(), // Replace with dynamic cart count
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                child: const Icon(
+                  Icons.shopping_cart_outlined,
+                  color: Colors.white,
+                  size: 30.0,
+                ),
+              );
+            }),
           ),
-          itemCount: controller.stores.length,
-          itemBuilder: (context, index) {
-            final store = controller.stores[index];
-            return StoreCard(store: store);
-          },
-        ),
+          SizedBox(
+            width: 20.w,
+          )
+        ],
       ),
-    );
-  }
-}
-
-class StoreCard extends StatelessWidget {
-  final StoreModel store;
-
-  const StoreCard({required this.store, super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Get.toNamed(AppRoute.productsPage, arguments: store);
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              spreadRadius: 2,
-              blurRadius: 5,
-              offset: const Offset(0, 3),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(12.0)),
-              child: Image.network(
-                store.image,
-                fit: BoxFit.cover,
-                height: 120.0,
-                width: double.infinity,
+      body: Obx(() {
+        if (controller.status.value == RequestStatus.loading) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, // Two items per row
+                crossAxisSpacing: 16.0,
+                mainAxisSpacing: 16.0,
+                childAspectRatio: 0.75, // Adjusts the height-to-width ratio
               ),
+              itemCount: controller.stores.length,
+              itemBuilder: (context, index) {
+                final store = controller.stores[index];
+                return StoreCard(store: store);
+              },
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    store.name,
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  const SizedBox(height: 4.0),
-                  Text(
-                    store.description,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 12.0,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+          );
+        }
+      }),
     );
   }
 }

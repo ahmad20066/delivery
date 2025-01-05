@@ -38,6 +38,7 @@ dependencies:
   get_storage: ^2.1.1
   shimmer: ^3.0.0
   badges: ^3.1.2
+  pretty_animated_buttons: ^0.0.2
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6

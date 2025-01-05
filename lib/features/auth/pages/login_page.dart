@@ -3,6 +3,7 @@ import 'package:deliveryapp/common/routers/app_router.dart';
 import 'package:deliveryapp/common/widgets/custom_appbar.dart';
 import 'package:deliveryapp/common/widgets/custom_button.dart';
 import 'package:deliveryapp/common/widgets/custom_textfield.dart';
+import 'package:deliveryapp/data/enums/request_status.dart';
 import 'package:deliveryapp/features/auth/controllers/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -65,24 +66,28 @@ class LoginPage extends StatelessWidget {
                 );
               }),
               // SizedBox(height: 10.h),
-              Align(
-                alignment: AlignmentDirectional.centerStart,
-                child: TextButton(
-                  onPressed: () {
-                    // Add logic for forgot password
-                  },
-                  child: Text(
-                    "Forgot Password?",
-                    style: TextStyle(color: AppColors.primaryColor),
-                  ),
-                ),
-              ),
+              // Align(
+              //   alignment: AlignmentDirectional.centerStart,
+              //   child: TextButton(
+              //     onPressed: () {},
+              //     child: Text(
+              //       "Forgot Password?",
+              //       style: TextStyle(color: AppColors.primaryColor),
+              //     ),
+              //   ),
+              // ),
               SizedBox(height: 20.h),
-              CustomButton(
-                  title: "Log in",
-                  onTap: () {
-                    Get.offAllNamed(AppRoute.main);
-                  }),
+              Obx(() => controller.status.value == RequestStatus.loading
+                  ? const CustomButton(
+                      title: "Log in",
+                      onTap: null,
+                      loading: true,
+                    )
+                  : CustomButton(
+                      title: "Log in",
+                      onTap: () {
+                        controller.login();
+                      })),
               SizedBox(height: 20.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

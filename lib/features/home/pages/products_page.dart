@@ -1,10 +1,13 @@
 import 'package:badges/badges.dart' as badges;
+import 'package:deliveryapp/common/constants/end_points.dart';
 import 'package:deliveryapp/common/routers/app_router.dart';
 import 'package:deliveryapp/common/widgets/custom_appbar.dart';
 import 'package:deliveryapp/data/models/product_model.dart';
+import 'package:deliveryapp/features/cart/controllers/cart_controller.dart';
 import 'package:deliveryapp/features/home/controllers/products_controller.dart';
 import 'package:deliveryapp/features/main_layout/controller/main_layout_state.dart';
 import 'package:deliveryapp/features/main_layout/controller/navbar_controller.dart';
+import 'package:deliveryapp/features/wishlist/controllers/wishlist_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -60,50 +63,56 @@ class ProductsPage extends StatelessWidget {
                 onTap: () {
                   Get.toNamed(AppRoute.cartPage);
                 },
-                child: badges.Badge(
-                  badgeStyle: badges.BadgeStyle(
-                    badgeColor: Colors.redAccent,
-                  ),
-                  badgeContent: const Text(
-                    '3', // Replace with dynamic cart count
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.bold,
+                child: GetBuilder<CartController>(builder: (controller) {
+                  return badges.Badge(
+                    badgeStyle: badges.BadgeStyle(
+                      badgeColor: Colors.redAccent,
+                    ),
+                    badgeContent: Text(
+                      controller.cartItems.length
+                          .toString(), // Replace with dynamic cart count
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    child: const Icon(
+                      Icons.shopping_cart_outlined,
+                      color: Colors.green,
+                      size: 30.0,
+                    ),
+                  );
+                }),
+              ),
+              GetBuilder<WishlistController>(builder: (wController) {
+                return GestureDetector(
+                  onTap: () {
+                    Get.back();
+                    Get.find<NavBarController>().mainState.value =
+                        MainLayouState.favorites;
+                  },
+                  child: badges.Badge(
+                    badgeStyle: badges.BadgeStyle(
+                      badgeColor: Colors.redAccent,
+                    ),
+                    badgeContent: Text(
+                      wController.products.length
+                          .toString(), // Replace with dynamic favorites count
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    child: const Icon(
+                      Icons.favorite_outline,
+                      color: Colors.red,
+                      size: 30.0,
                     ),
                   ),
-                  child: const Icon(
-                    Icons.shopping_cart_outlined,
-                    color: Colors.green,
-                    size: 30.0,
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Get.back();
-                  Get.find<NavBarController>().mainState.value =
-                      MainLayouState.favorites;
-                },
-                child: const badges.Badge(
-                  badgeStyle: badges.BadgeStyle(
-                    badgeColor: Colors.redAccent,
-                  ),
-                  badgeContent: const Text(
-                    '5', // Replace with dynamic favorites count
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  child: const Icon(
-                    Icons.favorite_outline,
-                    color: Colors.red,
-                    size: 30.0,
-                  ),
-                ),
-              ),
+                );
+              }),
             ],
           ),
         ),
@@ -145,7 +154,7 @@ class ProductCard extends StatelessWidget {
                   borderRadius:
                       const BorderRadius.vertical(top: Radius.circular(12.0)),
                   child: Image.network(
-                    product.image,
+                    EndPoints.baseImageUrl + product.image,
                     fit: BoxFit.cover,
                     height: 150.0,
                     width: double.infinity,
@@ -154,19 +163,22 @@ class ProductCard extends StatelessWidget {
                 Positioned(
                   top: 8.0,
                   right: 8.0,
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white.withOpacity(0.9),
-                    child: IconButton(
-                      icon: const Icon(
-                        Icons.favorite_border,
-                        color: Colors.red,
+                  child: GetBuilder<WishlistController>(builder: (controller) {
+                    return CircleAvatar(
+                      backgroundColor: Colors.white.withOpacity(0.9),
+                      child: IconButton(
+                        icon: Icon(
+                          controller.isFavorite(product)
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color: Colors.red,
+                        ),
+                        onPressed: () {
+                          controller.toggleFavorite(product);
+                        },
                       ),
-                      onPressed: () {
-                        Get.snackbar(
-                            "Favorite", "${product.name} added to favorites");
-                      },
-                    ),
-                  ),
+                    );
+                  }),
                 ),
               ],
             ),
@@ -215,13 +227,29 @@ class ProductCard extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 8.h),
-                  Align(
-                    alignment: Alignment.center,
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.shopping_cart_outlined),
-                    ),
-                  ),
+                  GetBuilder<CartController>(builder: (_) {
+                    return Align(
+                      alignment: Alignment.center,
+                      child: IconButton(
+                        onPressed:
+                            Get.find<CartController>().isInCart(product.id)
+                                ? () {
+                                    Get.find<CartController>()
+                                        .removeFromCart(product.id);
+                                  }
+                                : () {
+                                    Get.find<CartController>()
+                                        .addToCart(product.id);
+                                  },
+                        icon: Icon(
+                          Get.find<CartController>().isInCart(product.id)
+                              ? Icons.shopping_cart
+                              : Icons.shopping_cart_outlined,
+                          color: Colors.green,
+                        ),
+                      ),
+                    );
+                  }),
                 ],
               ),
             ),

@@ -2,6 +2,7 @@ import 'package:deliveryapp/common/constants/app_colors.dart';
 import 'package:deliveryapp/common/widgets/custom_appbar.dart';
 import 'package:deliveryapp/common/widgets/custom_button.dart';
 import 'package:deliveryapp/common/widgets/custom_textfield.dart';
+import 'package:deliveryapp/data/enums/request_status.dart';
 import 'package:deliveryapp/features/auth/controllers/signup_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,6 +20,7 @@ class SignupPage extends StatelessWidget {
       appBar: CustomAppBar(
         title: "Sign Up",
         hasLeading: true,
+        textColor: Colors.white,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -39,6 +41,26 @@ class SignupPage extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Colors.grey[700],
                     ),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Center(
+                child: GestureDetector(
+                  onTap: controller.pickImage,
+                  child: Obx(
+                    () => CircleAvatar(
+                      radius: 50.w,
+                      backgroundImage: controller.selectedImage.value != null
+                          ? FileImage(controller.selectedImage.value!)
+                          : null,
+                      child: controller.selectedImage.value == null
+                          ? Icon(Icons.camera_alt,
+                              size: 50.w, color: Colors.grey)
+                          : null,
+                    ),
+                  ),
+                ),
               ),
               SizedBox(height: 30.h),
               CustomTextField(
@@ -106,7 +128,19 @@ class SignupPage extends StatelessWidget {
                 );
               }),
               SizedBox(height: 40.h),
-              CustomButton(title: "Sign Up", onTap: () {}),
+              Obx(
+                () => controller.status.value == RequestStatus.loading
+                    ? CustomButton(
+                        title: "Sign Up",
+                        onTap: null,
+                        loading: true,
+                      )
+                    : CustomButton(
+                        title: "Sign Up",
+                        onTap: () {
+                          controller.signup();
+                        }),
+              ),
               SizedBox(height: 20.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

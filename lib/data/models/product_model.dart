@@ -4,7 +4,7 @@ class ProductModel {
   int id;
   String name;
   String description;
-  String amount;
+  int amount;
   String price;
   String image;
   ProductModel({
@@ -32,7 +32,7 @@ class ProductModel {
       id: map['id'] as int,
       name: map['name'] as String,
       description: map['description'] as String,
-      amount: map['amount'].toString() as String,
+      amount: map['amount'],
       price: map['price'].toString() as String,
       image: map['image'] as String,
     );

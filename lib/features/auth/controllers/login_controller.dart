@@ -3,6 +3,8 @@ import 'package:deliveryapp/common/routers/app_router.dart';
 import 'package:deliveryapp/common/utils/custom_toasts.dart';
 import 'package:deliveryapp/data/enums/request_status.dart';
 import 'package:deliveryapp/data/repositories/auth_repo.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -14,8 +16,12 @@ class LoginController extends GetxController {
   final AuthRepo _repo = AuthRepo();
   login() async {
     status(RequestStatus.loading);
-    final appResponse = await _repo.login(
-        {"phone": phoneController.text, "password": passwordController.text});
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    final appResponse = await _repo.login({
+      "phone": phoneController.text,
+      "password": passwordController.text,
+      "fcm_token": fcmToken
+    });
     if (appResponse.success) {
       print(appResponse.data);
       status(RequestStatus.success);

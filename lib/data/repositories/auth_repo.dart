@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 class AuthRepo {
   Future<AppResponse> login(Map<String, dynamic> loginBody) async {
     try {
+      print(loginBody);
       var appResponse =
           await ApiProvider.post(url: EndPoints.loginUrl, body: loginBody);
 

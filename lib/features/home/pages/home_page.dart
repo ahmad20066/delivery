@@ -17,65 +17,70 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final HomeController controller = Get.put(HomeController());
 
-    return Scaffold(
-      appBar: CustomAppBar(
-        title: "Home",
-        actions: [
-          GestureDetector(
-            onTap: () {
-              Get.toNamed(AppRoute.cartPage);
-            },
-            child: GetBuilder<CartController>(builder: (controller) {
-              return badges.Badge(
-                badgeStyle: badges.BadgeStyle(
-                  badgeColor: Colors.redAccent,
-                ),
-                badgeContent: Text(
-                  controller.cartItems.length
-                      .toString(), // Replace with dynamic cart count
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                child: const Icon(
-                  Icons.shopping_cart_outlined,
-                  color: Colors.white,
-                  size: 30.0,
-                ),
-              );
-            }),
-          ),
-          SizedBox(
-            width: 20.w,
-          )
-        ],
-      ),
-      body: Obx(() {
-        if (controller.status.value == RequestStatus.loading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else {
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, // Two items per row
-                crossAxisSpacing: 16.0,
-                mainAxisSpacing: 16.0,
-                childAspectRatio: 0.75, // Adjusts the height-to-width ratio
-              ),
-              itemCount: controller.stores.length,
-              itemBuilder: (context, index) {
-                final store = controller.stores[index];
-                return StoreCard(store: store);
+    return RefreshIndicator(
+      onRefresh: () async {
+        await controller.getStores();
+      },
+      child: Scaffold(
+        appBar: CustomAppBar(
+          title: "Home",
+          actions: [
+            GestureDetector(
+              onTap: () {
+                Get.toNamed(AppRoute.cartPage);
               },
+              child: GetBuilder<CartController>(builder: (controller) {
+                return badges.Badge(
+                  badgeStyle: badges.BadgeStyle(
+                    badgeColor: Colors.redAccent,
+                  ),
+                  badgeContent: Text(
+                    controller.cartItems.length
+                        .toString(), // Replace with dynamic cart count
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  child: const Icon(
+                    Icons.shopping_cart_outlined,
+                    color: Colors.white,
+                    size: 30.0,
+                  ),
+                );
+              }),
             ),
-          );
-        }
-      }),
+            SizedBox(
+              width: 20.w,
+            )
+          ],
+        ),
+        body: Obx(() {
+          if (controller.status.value == RequestStatus.loading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, // Two items per row
+                  crossAxisSpacing: 16.0,
+                  mainAxisSpacing: 16.0,
+                  childAspectRatio: 0.75, // Adjusts the height-to-width ratio
+                ),
+                itemCount: controller.stores.length,
+                itemBuilder: (context, index) {
+                  final store = controller.stores[index];
+                  return StoreCard(store: store);
+                },
+              ),
+            );
+          }
+        }),
+      ),
     );
   }
 }

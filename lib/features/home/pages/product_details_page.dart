@@ -1,4 +1,6 @@
+import 'package:deliveryapp/common/routers/app_router.dart';
 import 'package:deliveryapp/common/widgets/custom_appbar.dart';
+import 'package:deliveryapp/features/cart/controllers/cart_controller.dart';
 import 'package:deliveryapp/features/home/controllers/product_details_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -104,8 +106,11 @@ class ProductDetailsPage extends StatelessWidget {
                       ),
                       ElevatedButton.icon(
                         onPressed: () {
-                          Get.snackbar("Cart", "${product.name} added to cart",
-                              snackPosition: SnackPosition.BOTTOM);
+                          showQuantityDialog(context, product.name, (quantity) {
+                            // Add to cart logic with selected quantity
+                            Get.find<CartController>()
+                                .addToCart(product.id, quantity);
+                          });
                         },
                         icon: const Icon(Icons.shopping_cart_outlined),
                         label: const Text("Add to Cart"),
@@ -179,8 +184,7 @@ class ProductDetailsPage extends StatelessWidget {
             // Cart Button
             FloatingActionButton.extended(
               onPressed: () {
-                Get.snackbar("Cart", "View your cart",
-                    snackPosition: SnackPosition.BOTTOM);
+                Get.toNamed(AppRoute.cartPage);
               },
               label: const Text(
                 "Cart",
@@ -213,4 +217,62 @@ class ProductDetailsPage extends StatelessWidget {
       ),
     );
   }
+}
+
+void showQuantityDialog(
+  BuildContext context,
+  String productName,
+  Function(int) onConfirm,
+) {
+  int selectedQuantity = 1;
+
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Text("Select Quantity for $productName"),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.remove),
+              onPressed: () {
+                if (selectedQuantity > 1) {
+                  selectedQuantity--;
+                  (context as Element).markNeedsBuild();
+                }
+              },
+            ),
+            Text(
+              "$selectedQuantity",
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () {
+                selectedQuantity++;
+                (context as Element).markNeedsBuild();
+              },
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Cancel"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              onConfirm(selectedQuantity);
+            },
+            child: const Text("Confirm"),
+          ),
+        ],
+      );
+    },
+  );
 }

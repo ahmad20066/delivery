@@ -31,9 +31,17 @@ class CartController extends GetxController {
     }
   }
 
-  Future<void> addToCart(int productId) async {
+  void updateQuantity(int productId, int newAmount) {
+    final index = cartItems.indexWhere((item) => item.id == productId);
+    if (index != -1) {
+      cartItems[index].amount = newAmount;
+      update();
+    }
+  }
+
+  Future<void> addToCart(int productId, int quantity) async {
     AppResponse response = await repo.addToCart([
-      {"product_id": productId, "quantity": 1}
+      {"product_id": productId, "quantity": quantity}
     ]);
     if (response.success) {
       fetchCart();
@@ -45,12 +53,15 @@ class CartController extends GetxController {
 
   Future<void> checkout() async {
     checkoutStatus(RequestStatus.loading);
-    final list = cartItems.map((e) => {"product_id": e.id}).toList();
+    final list = cartItems
+        .map((e) => {"product_id": e.id, "quantity": e.amount})
+        .toList();
     AppResponse response = await repo.checkout(list);
     if (response.success) {
-      cartItems.clear();
+      // cartItems.clear();
       checkoutStatus(RequestStatus.success);
       Get.offAllNamed(AppRoute.main);
+      clearCart();
       CustomToasts.SuccessDialog("Order Placed successfully");
       update();
     } else {
@@ -64,15 +75,35 @@ class CartController extends GetxController {
 
     if (product != null) {
       cartItems.remove(product);
-
       update();
     } else {
       Get.snackbar("Error", "Product not found in the cart");
     }
     final appResponse = await repo.deleteCartItem(productId);
     if (appResponse.success) {
+      CustomToasts.SuccessDialog("Item removed successfully");
     } else {
-      CustomToasts.ErrorDialog(appResponse.errorMessage!);
+      CustomToasts.ErrorDialog(
+          appResponse.errorMessage ?? "Failed to remove item");
+    }
+  }
+
+  Future<void> clearCart() async {
+    print("aaaaa");
+    if (cartItems.isEmpty) {
+      Get.snackbar("Info", "Cart is already empty");
+      return;
+    }
+
+    final items = cartItems.map((e) => {"product_id": e.id}).toList();
+
+    AppResponse response = await repo.clearCart(items);
+    if (response.success) {
+      cartItems.clear();
+      // CustomToasts.SuccessDialog("Cart cleared successfully");
+      update();
+    } else {
+      CustomToasts.ErrorDialog(response.errorMessage ?? "Failed to clear cart");
     }
   }
 

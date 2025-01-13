@@ -29,9 +29,10 @@ class CartPage extends StatelessWidget {
             return const Center(child: Text("Failed to load cart."));
           case RequestStatus.success:
             return GetBuilder<CartController>(builder: (context) {
+              // Calculate total price considering quantity
               double totalPrice = controller.cartItems.fold(
                 0,
-                (sum, item) => sum + (double.parse(item.price)),
+                (sum, item) => sum + (double.parse(item.price) * item.amount),
               );
               return Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -65,12 +66,48 @@ class CartPage extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              subtitle: Text(
-                                "Price: \$${item.price.toString()}",
-                                style: const TextStyle(
-                                  fontSize: 14.0,
-                                  color: Colors.black54,
-                                ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Price: \$${item.price.toString()}",
+                                    style: const TextStyle(
+                                      fontSize: 14.0,
+                                      color: Colors.black54,
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                        icon: const Icon(Icons.remove),
+                                        onPressed: () {
+                                          if (item.amount > 1) {
+                                            controller.updateQuantity(
+                                                item.id, item.amount - 1);
+                                          } else {
+                                            controller.removeFromCart(item.id);
+                                          }
+                                        },
+                                      ),
+                                      GetBuilder<CartController>(builder: (_) {
+                                        return Text(
+                                          "${item.amount}",
+                                          style: const TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        );
+                                      }),
+                                      IconButton(
+                                        icon: const Icon(Icons.add),
+                                        onPressed: () {
+                                          controller.updateQuantity(
+                                              item.id, item.amount + 1);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                               trailing: IconButton(
                                 icon:

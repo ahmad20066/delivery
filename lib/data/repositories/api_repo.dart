@@ -98,6 +98,22 @@ class ApiRepo {
     }
   }
 
+  Future<AppResponse> clearCart(List<Map<String, dynamic>> items) async {
+    try {
+      final response = await ApiProvider.post(
+        url: "${EndPoints.removeCart}",
+        token: CacheProvider.getAppToken(),
+        body: {"items": items},
+      );
+      return AppResponse(success: true, data: response.data);
+    } on DioException catch (e) {
+      return AppResponse(
+        success: false,
+        errorMessage: e.message ?? e.toString(),
+      );
+    }
+  }
+
   Future<AppResponse> getProfile() async {
     try {
       final response = await ApiProvider.get(

@@ -5,6 +5,7 @@ import 'package:deliveryapp/common/widgets/custom_appbar.dart';
 import 'package:deliveryapp/data/models/product_model.dart';
 import 'package:deliveryapp/features/cart/controllers/cart_controller.dart';
 import 'package:deliveryapp/features/home/controllers/products_controller.dart';
+import 'package:deliveryapp/features/home/pages/product_details_page.dart';
 import 'package:deliveryapp/features/main_layout/controller/main_layout_state.dart';
 import 'package:deliveryapp/features/main_layout/controller/navbar_controller.dart';
 import 'package:deliveryapp/features/wishlist/controllers/wishlist_controller.dart';
@@ -238,8 +239,12 @@ class ProductCard extends StatelessWidget {
                                         .removeFromCart(product.id);
                                   }
                                 : () {
-                                    Get.find<CartController>()
-                                        .addToCart(product.id);
+                                    showQuantityDialog(context, product.name,
+                                        (quantity) {
+                                      // Add to cart logic with selected quantity
+                                      Get.find<CartController>()
+                                          .addToCart(product.id, quantity);
+                                    });
                                   },
                         icon: Icon(
                           Get.find<CartController>().isInCart(product.id)

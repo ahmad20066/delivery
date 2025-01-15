@@ -54,7 +54,11 @@ class SignupController extends GetxController {
     if (appResponse.success) {
       status(RequestStatus.success);
       CacheProvider.setAppToken(appResponse.data['token']);
-      Get.offAllNamed(AppRoute.main);
+      if (selectedRole.value == 'Driver') {
+        Get.offAllNamed(AppRoute.driver);
+      } else {
+        Get.offAllNamed(AppRoute.main);
+      }
     } else {
       status(RequestStatus.onerror);
       CustomToasts.ErrorDialog(appResponse.errorMessage!);

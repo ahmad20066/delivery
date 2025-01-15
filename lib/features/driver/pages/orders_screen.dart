@@ -80,14 +80,15 @@ class OrdersScreen extends StatelessWidget {
                   ),
                 ),
                 subtitle: Text(
-                  product.description,
+                  product.location!,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(color: Colors.grey),
                 ),
                 trailing: PopupMenuButton<String>(
                   onSelected: (value) {
-                    ordersController.updateOrderStatus(product.id, value);
+                    ordersController.updateOrderStatus(
+                        product.order_id!, value);
                   },
                   itemBuilder: (context) => [
                     const PopupMenuItem(

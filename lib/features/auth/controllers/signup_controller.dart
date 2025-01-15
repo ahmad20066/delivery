@@ -4,6 +4,7 @@ import 'package:deliveryapp/common/utils/custom_toasts.dart';
 import 'package:deliveryapp/data/enums/request_status.dart';
 import 'package:deliveryapp/data/models/user_model.dart';
 import 'package:deliveryapp/data/repositories/auth_repo.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -34,11 +35,13 @@ class SignupController extends GetxController {
 
   signup() async {
     status(RequestStatus.loading);
+    final fcmToken = await FirebaseMessaging.instance.getToken();
 
     final user = UserModel(
       firstName: firstNameController.text,
       lastName: lastNameController.text,
       location: locationController.text,
+      fcm_token: fcmToken,
       password: passwordController.text,
       password_confirmation: confirmPasswordController.text,
       phone: phoneController.text,

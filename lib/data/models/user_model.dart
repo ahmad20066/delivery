@@ -12,18 +12,18 @@ class UserModel {
   var image;
   String? password;
   String? password_confirmation;
-
+  String? fcm_token;
   int? id;
-  UserModel({
-    required this.firstName,
-    required this.lastName,
-    required this.location,
-    required this.phone,
-    required this.image,
-    this.password,
-    this.password_confirmation,
-    this.id,
-  });
+  UserModel(
+      {required this.firstName,
+      required this.lastName,
+      required this.location,
+      required this.phone,
+      required this.image,
+      this.password,
+      this.password_confirmation,
+      this.id,
+      this.fcm_token});
 
   Future<Map<String, dynamic>> toMap() async {
     return <String, dynamic>{
@@ -33,7 +33,8 @@ class UserModel {
       'phone': phone,
       'image': await MultipartFile.fromFile(image.path),
       'password': password,
-      'password_confirmation': password_confirmation
+      'password_confirmation': password_confirmation,
+      'fcm_token': fcm_token
     };
   }
 

@@ -16,6 +16,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HomeController controller = Get.put(HomeController());
+    final TextEditingController searchController = TextEditingController();
 
     return RefreshIndicator(
       onRefresh: () async {
@@ -35,8 +36,7 @@ class HomePage extends StatelessWidget {
                     badgeColor: Colors.redAccent,
                   ),
                   badgeContent: Text(
-                    controller.cartItems.length
-                        .toString(), // Replace with dynamic cart count
+                    controller.cartItems.length.toString(),
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 12.0,
@@ -51,35 +51,58 @@ class HomePage extends StatelessWidget {
                 );
               }),
             ),
-            SizedBox(
-              width: 20.w,
-            )
+            SizedBox(width: 20.w),
           ],
         ),
-        body: Obx(() {
-          if (controller.status.value == RequestStatus.loading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
-            return Padding(
+        body: Column(
+          children: [
+            Padding(
               padding: const EdgeInsets.all(16.0),
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // Two items per row
-                  crossAxisSpacing: 16.0,
-                  mainAxisSpacing: 16.0,
-                  childAspectRatio: 0.75, // Adjusts the height-to-width ratio
+              child: TextField(
+                controller: searchController,
+                onChanged: (value) => controller.searchStores(value),
+                decoration: InputDecoration(
+                  hintText: 'search'.tr,
+                  prefixIcon: const Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
                 ),
-                itemCount: controller.stores.length,
-                itemBuilder: (context, index) {
-                  final store = controller.stores[index];
-                  return StoreCard(store: store);
-                },
               ),
-            );
-          }
-        }),
+            ),
+            Expanded(
+              child: Obx(() {
+                if (controller.status.value == RequestStatus.loading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (controller.filteredStores.isEmpty) {
+                  return const Center(
+                    child: Text("No stores found"),
+                  );
+                } else {
+                  return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 16.0,
+                        mainAxisSpacing: 16.0,
+                        childAspectRatio: 0.75,
+                      ),
+                      itemCount: controller.filteredStores.length,
+                      itemBuilder: (context, index) {
+                        final store = controller.filteredStores[index];
+                        return StoreCard(store: store);
+                      },
+                    ),
+                  );
+                }
+              }),
+            ),
+          ],
+        ),
       ),
     );
   }

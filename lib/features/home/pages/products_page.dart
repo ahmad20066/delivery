@@ -19,27 +19,49 @@ class ProductsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ProductsController());
+    final TextEditingController searchController = TextEditingController();
+
     return Scaffold(
       appBar: CustomAppBar(
         title: controller.store!.name,
         textColor: Colors.white,
         hasLeading: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 16.0,
-            mainAxisSpacing: 16.0,
-            childAspectRatio: 0.58,
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: TextField(
+              controller: searchController,
+              onChanged: (value) => controller.searchProducts(value),
+              decoration: InputDecoration(
+                hintText: 'search'.tr,
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+              ),
+            ),
           ),
-          itemCount: controller.products.length,
-          itemBuilder: (context, index) {
-            final product = controller.products[index];
-            return ProductCard(product: product);
-          },
-        ),
+          Expanded(
+            child: Obx(
+              () => GridView.builder(
+                padding: const EdgeInsets.all(16.0),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 16.0,
+                  mainAxisSpacing: 16.0,
+                  childAspectRatio: 0.58,
+                ),
+                itemCount: controller.filteredProducts.length,
+                itemBuilder: (context, index) {
+                  final product = controller.filteredProducts[index];
+                  return ProductCard(product: product);
+                },
+              ),
+            ),
+          ),
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Container(
@@ -70,8 +92,7 @@ class ProductsPage extends StatelessWidget {
                       badgeColor: Colors.redAccent,
                     ),
                     badgeContent: Text(
-                      controller.cartItems.length
-                          .toString(), // Replace with dynamic cart count
+                      controller.cartItems.length.toString(),
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 12.0,
@@ -98,8 +119,7 @@ class ProductsPage extends StatelessWidget {
                       badgeColor: Colors.redAccent,
                     ),
                     badgeContent: Text(
-                      wController.products.length
-                          .toString(), // Replace with dynamic favorites count
+                      wController.products.length.toString(),
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 12.0,

@@ -64,25 +64,24 @@ class ProfilePage extends StatelessWidget {
                   const Divider(),
                   ProfileOption(
                     icon: Icons.logout,
-                    title: "Logout",
+                    title: "logout".tr,
                     onTap: () {
                       showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
-                          title: const Text("Logout"),
-                          content:
-                              const Text("Are you sure you want to log out?"),
+                          title: Text("logout".tr),
+                          content: Text("are_you_sure_logout".tr),
                           actions: [
                             TextButton(
                               onPressed: () => Navigator.pop(context),
-                              child: const Text("Cancel"),
+                              child: Text("cancel".tr),
                             ),
                             ElevatedButton(
                               onPressed: () {
                                 Get.offAllNamed(AppRoute.loginPageUrl);
                                 CacheProvider.clearAppToken();
                               },
-                              child: const Text("Logout"),
+                              child: Text("logout".tr),
                             ),
                           ],
                         ),

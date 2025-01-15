@@ -7,7 +7,6 @@ import 'package:deliveryapp/data/repositories/auth_repo.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -22,6 +21,8 @@ class SignupController extends GetxController {
 
   Rx<File?> selectedImage = Rx<File?>(null);
   Rx<RequestStatus> status = RequestStatus.begin.obs;
+  RxString selectedRole = 'User'.obs; // Default role
+
   final AuthRepo _repo = AuthRepo();
 
   Future<void> pickImage() async {
@@ -45,7 +46,8 @@ class SignupController extends GetxController {
       password: passwordController.text,
       password_confirmation: confirmPasswordController.text,
       phone: phoneController.text,
-      image: selectedImage.value!, // Pass the selected image
+      role: selectedRole.value,
+      image: selectedImage.value!,
     );
 
     final appResponse = await _repo.register(user);

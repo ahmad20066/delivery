@@ -6,8 +6,8 @@ Map<String, String> ar = {
   "login": "تسجيل الدخول",
   "dont_have_account": "ليس لديك حساب؟",
   "signup": "إنشاء حساب",
-  "create_Account": "إنشاء حساب",
-  "Please fill in the details to sign up": "يرجى ملء التفاصيل للتسجيل",
+  "create_account": "إنشاء حساب",
+  "fill_details": "يرجى ملء التفاصيل للتسجيل",
   "first_name": "الاسم الأول",
   "last_name": "الاسم الأخير",
   "location": "الموقع",
@@ -29,5 +29,11 @@ Map<String, String> ar = {
   "select_quantity_for": "اختر الكمية لـ",
   "cancel": "إلغاء",
   "confirm": "تأكيد",
-  "profile": "الملف الشخصي"
+  "profile": "الملف الشخصي",
+  "search": "بحث",
+  "logout": "تسجيل خروج",
+  "are_you_sure_logout": "هل انت متأكد؟",
+  "select_role": "اختر نوع الحساب",
+  "User": "مستخدم",
+  "Driver": "سائق"
 };

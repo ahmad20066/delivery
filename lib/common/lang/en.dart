@@ -8,8 +8,8 @@ Map<String, String> en = {
   "login": "Log in",
   "dont_have_account": "Don't have an account?",
   "signup": "Sign Up",
-  "create_Account": "Create an Account",
-  "Please fill in the details to sign up": "fille_details",
+  "create_account": "Create an Account",
+  "fill_details": "Please fill in the details to sign up",
   "first_name": "First Name",
   "last_name": "Last Name",
   "location": "Location",
@@ -31,5 +31,10 @@ Map<String, String> en = {
   "select_quantity_for": "Select Quantity for",
   "cancel": "Cancel",
   "confirm": "Confirm",
-  "profile": "Profile"
+  "profile": "Profile",
+  "search": "Search",
+  "are_you_sure_logout": "Are you sure you want to log out?",
+  "select_role": "Selct Role",
+  "user": "User",
+  "driver": "Driver"
 };

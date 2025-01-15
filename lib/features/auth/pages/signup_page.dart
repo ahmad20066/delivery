@@ -42,9 +42,7 @@ class SignupPage extends StatelessWidget {
                       color: Colors.grey[700],
                     ),
               ),
-              SizedBox(
-                height: 10.h,
-              ),
+              SizedBox(height: 10.h),
               Center(
                 child: GestureDetector(
                   onTap: controller.pickImage,
@@ -88,6 +86,7 @@ class SignupPage extends StatelessWidget {
                 icon: Icon(Icons.location_on, color: Colors.grey),
               ),
               SizedBox(height: 20.h),
+              SizedBox(height: 20.h),
               StatefulBuilder(builder: (context, setState) {
                 return CustomTextField(
                   obscure: obscure,
@@ -118,7 +117,9 @@ class SignupPage extends StatelessWidget {
                   icon: Icon(Icons.lock_outline, color: Colors.grey),
                   suffix: IconButton(
                     icon: Icon(
-                        obscure ? Icons.visibility_off : Icons.visibility,
+                        obscureConfirm
+                            ? Icons.visibility_off
+                            : Icons.visibility,
                         color: obscureConfirm ? null : AppColors.primaryColor),
                     onPressed: () {
                       obscureConfirm = !obscureConfirm;
@@ -127,6 +128,28 @@ class SignupPage extends StatelessWidget {
                   ),
                 );
               }),
+              Text(
+                "select_role".tr,
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              SizedBox(height: 10.h),
+              Obx(
+                () => DropdownButton<String>(
+                  value: controller.selectedRole.value,
+                  items: ['User', 'Driver']
+                      .map((role) => DropdownMenuItem<String>(
+                            value: role,
+                            child: Text(role.tr),
+                          ))
+                      .toList(),
+                  onChanged: (value) {
+                    controller.selectedRole.value = value!;
+                  },
+                  isExpanded: true,
+                ),
+              ),
               SizedBox(height: 40.h),
               Obx(
                 () => controller.status.value == RequestStatus.loading

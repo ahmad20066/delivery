@@ -12,7 +12,7 @@ class WishlistPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(WishlistController());
     return Scaffold(
-      appBar: CustomAppBar(title: "Favorites"),
+      appBar: CustomAppBar(title: "favorites".tr),
       body: GetBuilder<WishlistController>(builder: (_) {
         // Handle different states of the request
         switch (controller.status.value) {

@@ -18,7 +18,7 @@ class SignupPage extends StatelessWidget {
     final SignupController controller = Get.put(SignupController());
     return Scaffold(
       appBar: CustomAppBar(
-        title: "Sign Up",
+        title: "signup".tr,
         hasLeading: true,
         textColor: Colors.white,
       ),
@@ -29,7 +29,7 @@ class SignupPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Create an Account",
+                "create_account".tr,
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -37,7 +37,7 @@ class SignupPage extends StatelessWidget {
               ),
               SizedBox(height: 10.h),
               Text(
-                "Please fill in the details to sign up",
+                "fill_details".tr,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Colors.grey[700],
                     ),
@@ -65,26 +65,26 @@ class SignupPage extends StatelessWidget {
               SizedBox(height: 30.h),
               CustomTextField(
                 controller: controller.firstNameController,
-                hintText: "First Name",
+                hintText: "first_name".tr,
                 icon: Icon(Icons.person, color: Colors.grey),
               ),
               SizedBox(height: 20.h),
               CustomTextField(
                 controller: controller.lastNameController,
-                hintText: "Last Name",
+                hintText: "last_name".tr,
                 icon: Icon(Icons.person_outline, color: Colors.grey),
               ),
               SizedBox(height: 20.h),
               CustomTextField(
                 controller: controller.phoneController,
-                hintText: "Phone",
+                hintText: "phone".tr,
                 keyboardType: TextInputType.phone,
                 icon: Icon(Icons.phone, color: Colors.grey),
               ),
               SizedBox(height: 20.h),
               CustomTextField(
                 controller: controller.locationController,
-                hintText: "Location",
+                hintText: "location".tr,
                 icon: Icon(Icons.location_on, color: Colors.grey),
               ),
               SizedBox(height: 20.h),
@@ -92,7 +92,7 @@ class SignupPage extends StatelessWidget {
                 return CustomTextField(
                   obscure: obscure,
                   controller: controller.passwordController,
-                  hintText: "Password",
+                  hintText: "password".tr,
                   keyboardType: TextInputType.visiblePassword,
                   icon: Icon(Icons.lock, color: Colors.grey),
                   maxLines: 1,
@@ -111,7 +111,7 @@ class SignupPage extends StatelessWidget {
               StatefulBuilder(builder: (context, setState) {
                 return CustomTextField(
                   controller: controller.confirmPasswordController,
-                  hintText: "Confirm Password",
+                  hintText: "confirm_password".tr,
                   obscure: obscureConfirm,
                   maxLines: 1,
                   keyboardType: TextInputType.visiblePassword,
@@ -131,12 +131,12 @@ class SignupPage extends StatelessWidget {
               Obx(
                 () => controller.status.value == RequestStatus.loading
                     ? CustomButton(
-                        title: "Sign Up",
+                        title: "signup".tr,
                         onTap: null,
                         loading: true,
                       )
                     : CustomButton(
-                        title: "Sign Up",
+                        title: "signup".tr,
                         onTap: () {
                           controller.signup();
                         }),
@@ -146,7 +146,7 @@ class SignupPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Already have an account?",
+                    "already_have_account".tr,
                     style: TextStyle(color: Colors.grey[700]),
                   ),
                   TextButton(
@@ -154,7 +154,7 @@ class SignupPage extends StatelessWidget {
                       Get.back();
                     },
                     child: Text(
-                      "Log In",
+                      "login".tr,
                       style: TextStyle(color: Theme.of(context).primaryColor),
                     ),
                   ),

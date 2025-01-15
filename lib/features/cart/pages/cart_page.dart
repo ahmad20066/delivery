@@ -24,9 +24,9 @@ class CartPage extends StatelessWidget {
           case RequestStatus.loading:
             return const Center(child: CircularProgressIndicator());
           case RequestStatus.nodata:
-            return const Center(child: Text("Your cart is empty."));
+            return Center(child: Text("cart_empty".tr));
           case RequestStatus.onerror:
-            return const Center(child: Text("Failed to load cart."));
+            return Center(child: Text("failed_to_load_cart".tr));
           case RequestStatus.success:
             return GetBuilder<CartController>(builder: (context) {
               // Calculate total price considering quantity
@@ -70,7 +70,7 @@ class CartPage extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Price: \$${item.price.toString()}",
+                                    "${"price".tr}: \$${item.price.toString()}",
                                     style: const TextStyle(
                                       fontSize: 14.0,
                                       color: Colors.black54,
@@ -127,8 +127,8 @@ class CartPage extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
-                            "Total:",
+                          Text(
+                            "total".tr,
                             style: TextStyle(
                               fontSize: 18.0,
                               fontWeight: FontWeight.bold,
@@ -148,7 +148,7 @@ class CartPage extends StatelessWidget {
                     Obx(() => CustomButton(
                           loading: controller.checkoutStatus.value ==
                               RequestStatus.loading,
-                          title: "Check Out",
+                          title: "checkout".tr,
                           onTap: () {
                             controller.checkout();
                           },

@@ -27,14 +27,14 @@ class NavBarWidget extends GetWidget<NavBarController> {
             children: [
               NavBarItem(
                   icon: Icons.home,
-                  title: "home",
+                  title: "home".tr,
                   isSelected: controller.mainState.value == MainLayouState.home,
                   onTap: () {
                     controller.setMainState(MainLayouState.home);
                   }),
               NavBarItem(
                   icon: Icons.favorite,
-                  title: "favorites",
+                  title: "favorites".tr,
                   iconHeight: 26,
                   isSelected:
                       controller.mainState.value == MainLayouState.favorites,
@@ -45,7 +45,7 @@ class NavBarWidget extends GetWidget<NavBarController> {
                   }),
               NavBarItem(
                   icon: Icons.person,
-                  title: "profile",
+                  title: "profile".tr,
                   isSelected:
                       controller.mainState.value == MainLayouState.profile,
                   onTap: () {

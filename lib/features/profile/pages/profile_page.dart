@@ -5,6 +5,7 @@ import 'package:deliveryapp/common/routers/app_router.dart';
 import 'package:deliveryapp/common/widgets/custom_appbar.dart';
 import 'package:deliveryapp/data/enums/request_status.dart';
 import 'package:deliveryapp/features/profile/controllers/profile_controller.dart';
+import 'package:deliveryapp/features/profile/widgets/language_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -16,7 +17,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileController());
     return Scaffold(
-      appBar: CustomAppBar(title: "Profile"),
+      appBar: CustomAppBar(title: "profile".tr),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -59,43 +60,12 @@ class ProfilePage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Column(
                 children: [
-                  // ProfileOption(
-                  //   icon: Icons.person_outline,
-                  //   title: "Edit Profile",
-                  //   onTap: () {
-                  //     Get.toNamed(AppRoute.editProfile);
-                  //   },
-                  // ),
-                  // const Divider(),
-                  // ProfileOption(
-                  //   icon: Icons.lock_outline,
-                  //   title: "Change Password",
-                  //   onTap: () {
-                  //     // Handle change password
-                  //   },
-                  // ),
-                  // const Divider(),
-                  // ProfileOption(
-                  //   icon: Icons.notifications_outlined,
-                  //   title: "Notifications",
-                  //   onTap: () {
-                  //     // Handle notifications
-                  //   },
-                  // ),
-                  // const Divider(),
-                  // ProfileOption(
-                  //   icon: Icons.help_outline,
-                  //   title: "Help & Support",
-                  //   onTap: () {
-                  //     // Handle help & support
-                  //   },
-                  // ),
+                  LanguageSwitcher(), // Add the language switcher here
                   const Divider(),
                   ProfileOption(
                     icon: Icons.logout,
                     title: "Logout",
                     onTap: () {
-                      // Handle logout
                       showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
@@ -121,7 +91,7 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
+            )
           ],
         ),
       ),

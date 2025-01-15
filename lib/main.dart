@@ -1,4 +1,5 @@
 import 'package:deliveryapp/common/helpers/notification_helper.dart';
+import 'package:deliveryapp/common/lang/translation.dart';
 import 'package:deliveryapp/common/providers/local/cache_provider.dart';
 import 'package:deliveryapp/common/providers/remote/api_provider.dart';
 import 'package:deliveryapp/common/routers/app_router.dart';
@@ -28,7 +29,9 @@ class MyApp extends StatelessWidget {
       designSize: Size(393, 852),
       child: GetMaterialApp(
         getPages: AppRoute.pages,
+        translations: AppTranslations(),
         debugShowCheckedModeBanner: false,
+        locale: Locale("ar"),
         initialRoute: AppRoute.splash,
       ),
     );

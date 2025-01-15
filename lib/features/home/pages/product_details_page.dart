@@ -2,6 +2,10 @@ import 'package:deliveryapp/common/routers/app_router.dart';
 import 'package:deliveryapp/common/widgets/custom_appbar.dart';
 import 'package:deliveryapp/features/cart/controllers/cart_controller.dart';
 import 'package:deliveryapp/features/home/controllers/product_details_controller.dart';
+import 'package:deliveryapp/features/main_layout/controller/main_layout_state.dart';
+import 'package:deliveryapp/features/main_layout/controller/navbar_controller.dart';
+import 'package:deliveryapp/features/wishlist/controllers/wishlist_controller.dart';
+import 'package:deliveryapp/features/wishlist/pages/wishlist_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -40,23 +44,26 @@ class ProductDetailsPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                // Favorite Button
-                Positioned(
-                  top: 16.h,
-                  right: 16.w,
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white.withOpacity(0.8),
-                    child: IconButton(
-                      icon:
-                          const Icon(Icons.favorite_border, color: Colors.red),
-                      onPressed: () {
-                        Get.snackbar(
-                            "Favorites", "${product.name} added to favorites",
-                            snackPosition: SnackPosition.BOTTOM);
-                      },
+                GetBuilder<WishlistController>(builder: (_) {
+                  return Positioned(
+                    top: 16.h,
+                    right: 16.w,
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white.withOpacity(0.8),
+                      child: IconButton(
+                        icon: Icon(
+                            !Get.find<WishlistController>().isFavorite(product)
+                                ? Icons.favorite_border
+                                : Icons.favorite,
+                            color: Colors.red),
+                        onPressed: () {
+                          Get.find<WishlistController>()
+                              .toggleFavorite(product);
+                        },
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                }),
               ],
             ),
             Padding(
@@ -97,13 +104,13 @@ class ProductDetailsPage extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        "${product.amount} in stock",
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: Colors.grey,
-                        ),
-                      ),
+                      // Text(
+                      //   "${product.amount} in stock",
+                      //   style: TextStyle(
+                      //     fontSize: 14.sp,
+                      //     color: Colors.grey,
+                      //   ),
+                      // ),
                       ElevatedButton.icon(
                         onPressed: () {
                           showQuantityDialog(context, product.name, (quantity) {
@@ -113,7 +120,7 @@ class ProductDetailsPage extends StatelessWidget {
                           });
                         },
                         icon: const Icon(Icons.shopping_cart_outlined),
-                        label: const Text("Add to Cart"),
+                        label: Text("add_to_cart".tr),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.deepPurple,
                           foregroundColor: Colors.white,
@@ -126,7 +133,7 @@ class ProductDetailsPage extends StatelessWidget {
                   ),
                   SizedBox(height: 16.h),
                   Text(
-                    "Key Features",
+                    "key_features".tr,
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.bold,
@@ -140,28 +147,28 @@ class ProductDetailsPage extends StatelessWidget {
                     children: [
                       Chip(
                         label: Text(
-                          "High Quality",
+                          "high_quality".tr,
                           style: TextStyle(fontSize: 12.sp),
                         ),
                         backgroundColor: Colors.purple[50],
                       ),
                       Chip(
                         label: Text(
-                          "Affordable Price",
+                          "affordable_price".tr,
                           style: TextStyle(fontSize: 12.sp),
                         ),
                         backgroundColor: Colors.purple[50],
                       ),
                       Chip(
                         label: Text(
-                          "Best Seller",
+                          "best_seller".tr,
                           style: TextStyle(fontSize: 12.sp),
                         ),
                         backgroundColor: Colors.purple[50],
                       ),
                       Chip(
                         label: Text(
-                          "Fast Delivery",
+                          "fast_delivery".tr,
                           style: TextStyle(fontSize: 12.sp),
                         ),
                         backgroundColor: Colors.purple[50],
@@ -174,20 +181,18 @@ class ProductDetailsPage extends StatelessWidget {
           ],
         ),
       ),
-      // Bottom Cart & Favorites Buttons
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // Cart Button
             FloatingActionButton.extended(
               onPressed: () {
                 Get.toNamed(AppRoute.cartPage);
               },
-              label: const Text(
-                "Cart",
+              label: Text(
+                "cart".tr,
                 style: TextStyle(color: Colors.white),
               ),
               icon: const Icon(
@@ -196,14 +201,15 @@ class ProductDetailsPage extends StatelessWidget {
               ),
               backgroundColor: Colors.green,
             ),
-            // Favorites Button
             FloatingActionButton.extended(
               onPressed: () {
-                Get.snackbar("Favorites", "View your favorites",
-                    snackPosition: SnackPosition.BOTTOM);
+                Get.back();
+                Get.back();
+                Get.find<NavBarController>()
+                    .mainState(MainLayouState.favorites);
               },
-              label: const Text(
-                "Favorites",
+              label: Text(
+                "favorites".tr,
                 style: TextStyle(color: Colors.white),
               ),
               icon: const Icon(
@@ -230,7 +236,7 @@ void showQuantityDialog(
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: Text("Select Quantity for $productName"),
+        title: Text("${"select_quantity_for".tr}$productName"),
         content: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -262,14 +268,14 @@ void showQuantityDialog(
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("Cancel"),
+            child: Text("cancel".tr),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               onConfirm(selectedQuantity);
             },
-            child: const Text("Confirm"),
+            child: Text("confirm".tr),
           ),
         ],
       );

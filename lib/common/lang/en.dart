@@ -1,3 +1,35 @@
-Map<String, String> en = {
+import 'package:get/utils.dart';
 
+Map<String, String> en = {
+  "welcome_back": "Welcome Back!",
+  "please_login": "Please log in to your account",
+  "phone": "Phone",
+  "password": "Password",
+  "login": "Log in",
+  "dont_have_account": "Don't have an account?",
+  "signup": "Sign Up",
+  "create_Account": "Create an Account",
+  "Please fill in the details to sign up": "fille_details",
+  "first_name": "First Name",
+  "last_name": "Last Name",
+  "location": "Location",
+  "confirm_password": "Confirm Passowrd",
+  "already_have_account": "Already have an account?",
+  "cart": "Cart",
+  "cart_empty": "Your cart is empty.",
+  "failed_to_load_cart": "Failed to load cart.",
+  "price": "Price",
+  "total": "Total:",
+  "checkout": "Check Out",
+  "home": "Home",
+  "key_features": "Key Features",
+  "high_quality": "High Quality",
+  "affordable_price": "Affordable Price",
+  "best_seller": "Best Seller",
+  "favorites": "Favorites",
+  "add_to_cart": "Add to Cart",
+  "select_quantity_for": "Select Quantity for",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "profile": "Profile"
 };

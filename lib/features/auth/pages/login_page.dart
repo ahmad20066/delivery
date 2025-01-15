@@ -16,7 +16,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(LoginController());
     return Scaffold(
-      appBar: CustomAppBar(title: "Login"),
+      appBar: CustomAppBar(title: "login".tr),
       body: SingleChildScrollView(
         child: Padding(
           padding: REdgeInsets.symmetric(horizontal: 20.w, vertical: 30.h),
@@ -24,7 +24,7 @@ class LoginPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Welcome Back!",
+                "welcome_back".tr,
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -32,7 +32,7 @@ class LoginPage extends StatelessWidget {
               ),
               SizedBox(height: 10.h),
               Text(
-                "Please log in to your account",
+                "please_login".tr,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Colors.grey[700],
                     ),
@@ -41,7 +41,7 @@ class LoginPage extends StatelessWidget {
               CustomTextField(
                 width: 335.w,
                 controller: controller.phoneController,
-                hintText: "Phone",
+                hintText: "phone".tr,
                 keyboardType: TextInputType.phone,
                 icon: Icon(Icons.phone),
               ),
@@ -50,7 +50,7 @@ class LoginPage extends StatelessWidget {
                 return CustomTextField(
                   obscure: obscure,
                   controller: controller.passwordController,
-                  hintText: "Password",
+                  hintText: "password".tr,
                   keyboardType: TextInputType.visiblePassword,
                   maxLines: 1,
                   icon: Icon(Icons.lock),
@@ -78,13 +78,13 @@ class LoginPage extends StatelessWidget {
               // ),
               SizedBox(height: 20.h),
               Obx(() => controller.status.value == RequestStatus.loading
-                  ? const CustomButton(
-                      title: "Log in",
+                  ? CustomButton(
+                      title: "login".tr,
                       onTap: null,
                       loading: true,
                     )
                   : CustomButton(
-                      title: "Log in",
+                      title: "login".tr,
                       onTap: () {
                         controller.login();
                       })),
@@ -93,7 +93,7 @@ class LoginPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Don't have an account?",
+                    "dont_have_account".tr,
                     style: TextStyle(color: Colors.grey[700]),
                   ),
                   TextButton(
@@ -101,7 +101,7 @@ class LoginPage extends StatelessWidget {
                       Get.toNamed(AppRoute.signupPageUrl);
                     },
                     child: Text(
-                      "Sign Up",
+                      "signup".tr,
                       style: TextStyle(color: AppColors.primaryColor),
                     ),
                   ),

@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget {
       },
       child: Scaffold(
         appBar: CustomAppBar(
-          title: "Home",
+          title: "home".tr,
           actions: [
             GestureDetector(
               onTap: () {
